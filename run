@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# =============================================================================
+# CodeOcean run script — SWAN-TC full reproduction pipeline
+# =============================================================================
+# This script reproduces all results and figures from the paper.
+# Working directory is assumed to be the repository root.
+# =============================================================================
+
+set -euo pipefail
+
+echo "============================================================"
+echo "  SWAN-TC  —  CodeOcean reproduction script"
+echo "============================================================"
+
+# ---------------------------------------------------------------------------
+# 0. Dependencies
+# ---------------------------------------------------------------------------
+echo ""
+echo "[0/8] Installing Python dependencies …"
+pip install -r requirements.txt --quiet
+
+# ---------------------------------------------------------------------------
+# 1. Synthetic beach profiles
+# ---------------------------------------------------------------------------
+echo ""
+echo "[1/8] Generating synthetic beach profiles …"
+python code/preprocessing/generate_profiles.py
+
+# ---------------------------------------------------------------------------
+# 2. UK validation — SWAN-TC predictions
+# ---------------------------------------------------------------------------
+echo ""
+echo "[2/8] Running SWAN-TC predictions (UK 2021–2023) …"
+python code/SWAN-TC/predict.py
+
+# ---------------------------------------------------------------------------
+# 3. Australia — bias prediction (SWAN-C transfer)
+# ---------------------------------------------------------------------------
+echo ""
+echo "[3/8] Predicting Australia bias (SWAN-C, January 2021) …"
+python code/australia/predict_bias.py
+
+# ---------------------------------------------------------------------------
+# 4. Australia — Transformer + bias correction
+# ---------------------------------------------------------------------------
+echo ""
+echo "[4/8] Running SWAN-T prediction for Australia …"
+python code/australia/predict_transformer.py
+
+# ---------------------------------------------------------------------------
+# 5–8. Figures
+# ---------------------------------------------------------------------------
+echo ""
+echo "[5/8] Figure 1 — UK buoy overview map …"
+python code/figures/fig1/prepare_data.py
+python code/figures/fig1/plot.py
+
+echo ""
+echo "[6/8] Figure 2 — Spatial R² comparison …"
+python code/figures/fig2/plot.py
+
+echo ""
+echo "[7/8] Figure 3 — SWAN-C bias evaluation …"
+python code/figures/fig3/plot.py
+
+echo ""
+echo "[8/8] Figure 4 & 5 — UK multi-year validation + Australia overview …"
+python code/figures/fig4/plot.py
+python code/figures/fig5/plot.py
+
+echo ""
+echo "============================================================"
+echo "  All steps completed.  Results written to results/"
+echo "============================================================"
