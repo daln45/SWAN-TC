@@ -10,6 +10,7 @@ from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 from sklearn.model_selection import train_test_split
 from catboost import CatBoostRegressor, Pool
 import random
+from pathlib import Path
 
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -44,17 +45,19 @@ logger = logging.getLogger()
 class Config:
     """配置类"""
 
-    base_input_dir = r"E:\profile\UK_year\swan_true\model_input"
+    _BASE_DIR = Path(__file__).resolve().parent.parent.parent   # repo root
+    _DATA_DIR = _BASE_DIR / "data" / "uk"
+    _WEIGHTS_DIR = _BASE_DIR / "weights"
 
     data_files_2020 = {
-        "depth": os.path.join(base_input_dir, "swan_depth_2020.csv"),
-        "wind": os.path.join(base_input_dir, "wind_wave_initial_data_2020.csv"),
-        "bias": os.path.join(base_input_dir, "bias_data", "bias_data_2020.csv")
+        "depth": str(_DATA_DIR / "swan_depth_2020.csv"),
+        "wind": str(_DATA_DIR / "wind_wave_initial_data_2020.csv"),
+        "bias": str(_DATA_DIR / "bias_data" / "bias_data_2020.csv")
     }
     data_files_2021 = {
-        "depth": os.path.join(base_input_dir, "swan_depth_2021.csv"),
-        "wind": os.path.join(base_input_dir, "wind_wave_initial_data_2021.csv"),
-        "bias": os.path.join(base_input_dir, "bias_data", "bias_data_2021.csv")
+        "depth": str(_DATA_DIR / "swan_depth_2021.csv"),
+        "wind": str(_DATA_DIR / "wind_wave_initial_data_2021.csv"),
+        "bias": str(_DATA_DIR / "bias_data" / "bias_data_2021.csv")
     }
 
     batch_size = 64
@@ -63,8 +66,8 @@ class Config:
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     result_dir = "./results_multi_bias"
-    model_path = "./results_multi_bias/best_multi_bias_model.cbm"
-    scaler_path = "./results_multi_bias/scaler_multi_bias.pkl"
+    model_path = str(_WEIGHTS_DIR / "best_multi_bias_model.cbm")
+    scaler_path = str(_WEIGHTS_DIR / "scaler_multi_bias.pkl")
 
     all_buoys = [
         "Bos_waves", "HgI_waves", "ChP_waves", "Mlf_waves", "BkB_waves", "Clv_waves", "Csl_waves", "Dwl_waves",

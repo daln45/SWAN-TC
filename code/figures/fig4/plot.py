@@ -24,8 +24,9 @@ class TransformerPredictConfig:
     depth_indices   = list(range(10, 200, 3))
     grid_spacing    = 50
 
-    # Update to point to your SWAN-TC prediction results directory
-    result_dir = Path("../../../results/swan_tc")
+    # Paths relative to this script file
+    _BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent   # repo root
+    result_dir = _BASE_DIR / "results" / "swan_tc"
 
     test_months     = [1, 7]
     predict_years   = [2021, 2022, 2023]
@@ -125,12 +126,14 @@ def add_panel_label(ax, label):
 # Data loading
 # =========================
 def load_data_for_year(year):
-    # Update these paths to your data directories
-    buoy_path = Path(f"../../../data/fig4_fig5/buoy_data_{year}.xlsx")
+    _BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+    _DATA_DIR = _BASE_DIR / "data"
+
+    buoy_path = _DATA_DIR / "fig4_fig5" / f"buoy_data_{year}.xlsx"
 
     pred_base = TransformerPredictConfig.result_dir / f"Final_Pred_{year}"
 
-    ww3_dir = Path("../../../data/fig4_fig5/ww3")
+    ww3_dir = _DATA_DIR / "fig4_fig5" / "ww3"
     ww3_files = {
         'hs_jan': ww3_dir / f"wave_height_uk_ww3_jan_{year}.xlsx",
         'hs_jul': ww3_dir / f"wave_height_uk_ww3_jul_{year}.xlsx",

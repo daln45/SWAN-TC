@@ -12,6 +12,7 @@ import re
 import math
 import glob
 import gc
+from pathlib import Path
 from torch.utils.data import Dataset, DataLoader
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
@@ -58,25 +59,30 @@ class PredictionConfig:
     batch_size = 64
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    # 路径配置 (请根据本地环境修改)
+    # 路径配置 (基于脚本文件位置自动解析)
+    _BASE_DIR = Path(__file__).resolve().parent.parent.parent   # repo root
+    _DATA_DIR = _BASE_DIR / "data" / "uk"
+    _WEIGHTS_DIR = _BASE_DIR / "weights"
+    _RESULTS_DIR = _BASE_DIR / "results"
+
     data_files_2021 = {
-        "depth": r"E:\profile\UK_year\swan_true\model_input\swan_depth_2021.csv",
-        "wind": r"E:\profile\UK_year\swan_true\model_input\wind_wave_initial_data_2021.csv",
+        "depth": str(_DATA_DIR / "swan_depth_2021.csv"),
+        "wind": str(_DATA_DIR / "wind_wave_initial_data_2021.csv"),
     }
     data_files_2022 = {
-        "depth": r"E:\profile\UK_year\swan_true\model_input\swan_depth_2022.csv",
-        "wind": r"E:\profile\UK_year\swan_true\model_input\wind_wave_initial_data_2022.csv",
+        "depth": str(_DATA_DIR / "swan_depth_2022.csv"),
+        "wind": str(_DATA_DIR / "wind_wave_initial_data_2022.csv"),
     }
     data_files_2023 = {
-        "depth": r"E:\profile\UK_year\swan_true\model_input\swan_depth_2023.csv",
-        "wind": r"E:\profile\UK_year\swan_true\model_input\wind_wave_initial_data_2023.csv",
+        "depth": str(_DATA_DIR / "swan_depth_2023.csv"),
+        "wind": str(_DATA_DIR / "wind_wave_initial_data_2023.csv"),
     }
 
     # SWAN-C 偏差预测结果目录 (运行 SWAN-C/predict.py 后生成)
-    bias_file_dir = r"E:\nn_model_v2\bias_invert\bias_profile\results_multi_bias_pred"
+    bias_file_dir = str(_RESULTS_DIR / "swan_c")
     # SWAN-T 模型权重与 Scaler
-    model_path = r"E:\nn_model_v2\nn_model\transformer_virtual\best_model_exp_5_100_percent.pth"
-    scaler_path = r"E:\nn_model_v2\nn_model\transformer_virtual\results_data_efficiency_exp_5_100_percent\scaler_exp_5_100_percent.pkl"
+    model_path = str(_WEIGHTS_DIR / "best_model_exp_5_100_percent.pth")
+    scaler_path = str(_WEIGHTS_DIR / "scaler_exp_5_100_percent.pkl")
     result_dir = "./results_swan_tc"
 
 

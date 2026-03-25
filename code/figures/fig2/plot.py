@@ -35,12 +35,17 @@ NAME_MAPPING = {
 
 DEPTH_INDICES = list(range(10, 200, 3))
 GRID_SPACING = 50
-DIR_BOT_FILES = "bot"
 
-# Update these paths to point to your local result directories
-RESULT_DIR_BASE = Path("../../SWAN-T/results_data_efficiency")
-FILE_SWAN_HS = Path("../../data/swan_hs_2020.csv")
-FILE_SWAN_TM = Path("../../data/swan_tm_2020.csv")
+# Paths relative to this script file
+_BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent   # repo root
+_DATA_DIR = _BASE_DIR / "data"
+_RESULTS_DIR = _BASE_DIR / "results"
+
+DIR_BOT_FILES = str(_DATA_DIR / "fig2" / "bot")
+
+RESULT_DIR_BASE = _RESULTS_DIR / "swan_t"
+FILE_SWAN_HS = _DATA_DIR / "uk" / "swan_hs_2020.csv"
+FILE_SWAN_TM = _DATA_DIR / "uk" / "swan_tm_2020.csv"
 
 EXP_NAME_SYNTHETIC  = "exp_5_100_percent"
 EXP_NAME_REAL_ONLY  = "exp_7_100_real_only"

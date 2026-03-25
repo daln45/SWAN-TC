@@ -21,14 +21,15 @@ warnings.filterwarnings('ignore')
 # Config
 # =========================
 class Config:
-    # Paths relative to this file; update to point to your result directories
-    input_dir = Path("../../../results")
+    # Paths relative to this script file
+    _BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent   # repo root
+    input_dir = _BASE_DIR / "results" / "swan_c"
     output_dir = Path(".")
 
     file_train = "results_2020_TRAIN_EVAL.xlsx"
     file_test  = "results_2021_TEST_EVAL.xlsx"
 
-    buoy_data_file = Path("../../../data/fig3/buoy_data_2021.xlsx")
+    buoy_data_file = _BASE_DIR / "data" / "fig3" / "buoy_data_2021.xlsx"
 
     VAR_CONFIG = {
         'Hs': {'lims': [-1.5, 1.5], 'unit': 'm'},

@@ -73,19 +73,22 @@ class DataEfficiencyConfig:
     train_months = list(range(1, 13))
 
     # ========== 2. 文件路径配置 (仅保留2020) ==========
+    _BASE_DIR = Path(__file__).resolve().parent.parent.parent   # repo root
+    _DATA_DIR = _BASE_DIR / "data" / "uk"
+
     data_files_2020 = {
-        "depth": r"E:\profile\UK_year\swan_true\model_input\swan_depth_2020.csv",
-        "wind": r"E:\profile\UK_year\swan_true\model_input\wind_wave_initial_data_2020.csv",
-        "swan_hs": r"E:\profile\UK_year\swan_true\model_input\swan_hs_2020.csv",
-        "swan_tm": r"E:\profile\UK_year\swan_true\model_input\swan_tm_2020.csv"
+        "depth": str(_DATA_DIR / "swan_depth_2020.csv"),
+        "wind": str(_DATA_DIR / "wind_wave_initial_data_2020.csv"),
+        "swan_hs": str(_DATA_DIR / "swan_hs_2020.csv"),
+        "swan_tm": str(_DATA_DIR / "swan_tm_2020.csv")
     }
 
     # 虚拟数据文件配置 (合并加载)
     data_files_virtual = {
-        "depth": r"E:\profile\UK_year\swan_true\model_input\virtual_profile_depth.csv",
-        "hs": r"E:\profile\UK_year\swan_true\model_input\virtual_profile_hs.csv",
-        "tm": r"E:\profile\UK_year\swan_true\model_input\virtual_profile_tm.csv",
-        "wind": r"E:\profile\UK_year\swan_true\model_input\boundary_data_2020.csv"
+        "depth": str(_DATA_DIR / "virtual_profile_depth.csv"),
+        "hs": str(_DATA_DIR / "virtual_profile_hs.csv"),
+        "tm": str(_DATA_DIR / "virtual_profile_tm.csv"),
+        "wind": str(_DATA_DIR / "boundary_data_2020.csv")
     }
 
     # ========== 3. 训练与测试时间配置 (统一为2020) ==========

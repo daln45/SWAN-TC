@@ -11,6 +11,7 @@ from catboost import CatBoostRegressor
 import random
 import pickle
 import logging
+from pathlib import Path
 from torch.utils.data import Dataset
 from tqdm import tqdm
 
@@ -35,25 +36,29 @@ np.random.seed(42)
 class Config:
     """预测配置类"""
 
+    _BASE_DIR = Path(__file__).resolve().parent.parent.parent   # repo root
+    _DATA_DIR = _BASE_DIR / "data" / "uk"
+    _WEIGHTS_DIR = _BASE_DIR / "weights"
+
     data_files_2021 = {
-        "depth": r"E:\profile\UK_year\swan_true\model_input\swan_depth_2021.csv",
-        "wind": r"E:\profile\UK_year\swan_true\model_input\wind_wave_initial_data_2021.csv",
+        "depth": str(_DATA_DIR / "swan_depth_2021.csv"),
+        "wind": str(_DATA_DIR / "wind_wave_initial_data_2021.csv"),
         "bias": None
     }
     data_files_2022 = {
-        "depth": r"E:\profile\UK_year\swan_true\model_input\swan_depth_2022.csv",
-        "wind": r"E:\profile\UK_year\swan_true\model_input\wind_wave_initial_data_2022.csv",
+        "depth": str(_DATA_DIR / "swan_depth_2022.csv"),
+        "wind": str(_DATA_DIR / "wind_wave_initial_data_2022.csv"),
         "bias": None
     }
     data_files_2023 = {
-        "depth": r"E:\profile\UK_year\swan_true\model_input\swan_depth_2023.csv",
-        "wind": r"E:\profile\UK_year\swan_true\model_input\wind_wave_initial_data_2023.csv",
+        "depth": str(_DATA_DIR / "swan_depth_2023.csv"),
+        "wind": str(_DATA_DIR / "wind_wave_initial_data_2023.csv"),
         "bias": None
     }
 
     result_dir = "./results_multi_bias_pred"
-    model_path = "./results_multi_bias/best_multi_bias_model.cbm"
-    scaler_path = "./results_multi_bias/scaler_multi_bias.pkl"
+    model_path = str(_WEIGHTS_DIR / "best_multi_bias_model.cbm")
+    scaler_path = str(_WEIGHTS_DIR / "scaler_multi_bias.pkl")
 
     all_buoys = [
         "Bos_waves", "HgI_waves", "ChP_waves", "Mlf_waves", "BkB_waves", "Clv_waves", "Csl_waves", "Dwl_waves",
